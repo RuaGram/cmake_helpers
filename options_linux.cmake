@@ -24,6 +24,9 @@ INTERFACE
     -Wno-error=reorder
     -Wno-error=unused-function
     -Wno-error=unused-but-set-variable
+    -Wno-array-bounds
+    -Wno-free-nonheap-object
+    -Wno-stringop-overflow
 )
 
 target_link_options_if_exists(common_options
