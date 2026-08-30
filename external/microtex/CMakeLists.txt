@@ -97,19 +97,27 @@ PRIVATE
     ${microtex_src}/platform/qt/graphic_qt.cpp
 )
 
-# Not SYSTEM for the producer's own sources or its layout-coupled consumer:
-# clang's -MMD leaves system headers out of generated dependency files. Keeping
-# both include paths ordinary makes MicroTeX and td_iv objects track header
-# changes instead of retaining objects compiled against older class layouts.
+# Keep the producer include ordinary so its own objects track MicroTeX headers.
+# Clang's -MMD also omits SYSTEM consumer headers, so non-MSVC consumers keep
+# the ordinary include and rebuild after a MicroTeX class-layout change. MSVC
+# consumers use an external include instead: upstream MicroTeX warnings must
+# not defeat the application's /WX policy.
 target_include_directories(external_microtex_bundled
 PRIVATE
     ${microtex_src}
 )
 
-target_include_directories(external_microtex_bundled
-INTERFACE
-    ${microtex_src}
-)
+if (MSVC)
+    target_include_directories(external_microtex_bundled SYSTEM
+    INTERFACE
+        ${microtex_src}
+    )
+else()
+    target_include_directories(external_microtex_bundled
+    INTERFACE
+        ${microtex_src}
+    )
+endif()
 
 # BUILD_QT selects the Qt graphics backend in MicroTeX's config.h gates.
 # Must be PUBLIC because it's checked from public headers (graphic_qt.h).
