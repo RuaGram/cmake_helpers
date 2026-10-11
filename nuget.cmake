@@ -34,6 +34,7 @@ function(nuget_add_package package_name package package_version)
             -Version ${package_version}
             -ExcludeVersion
             -OutputDirectory ${packages_loc}
+        COMMAND_ERROR_IS_FATAL ANY
         )
     else()
         get_property(package_version_cached GLOBAL PROPERTY ${package_key})
