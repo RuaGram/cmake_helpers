@@ -107,9 +107,10 @@ PRIVATE
     ${microtex_src}
 )
 
+# MSVC tracks dependencies with /showIncludes, SYSTEM only silences warnings.
 if (MSVC)
-    target_include_directories(external_microtex_bundled SYSTEM
-    INTERFACE
+    target_include_directories(external_microtex_bundled
+    SYSTEM INTERFACE
         ${microtex_src}
     )
 else()
